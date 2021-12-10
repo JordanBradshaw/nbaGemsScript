@@ -2,10 +2,17 @@ import json
 import sys
 
 
+def getIgnoreList():
+        with open('IgnorePlayers.txt', 'r') as f:
+            ignoreIDs = f.read().splitlines()
+            print("IgnoreList Loaded!")
+        return set(ignoreIDs)
+
 def importSettings():
     try:
         with open('settings.json','r') as json_file:
             data = json.load(json_file)
+            print("Settings loaded!")
         return data['date'][0], data['scoring'][0], data['thresholds'][0], data['oauth'][0]
     except IOError:
         data = {}
@@ -21,6 +28,35 @@ def importSettings():
             json.dump(data, outfile, indent=4)
         sys.exit("Settings file didn't exist so now you need to file in api key and secret")
 
+def getPlayerIDs(currentLeague):
+        try:
+            with open('PlayerIDs.txt') as f:
+                print("PlayerIDs loaded!")
+                return f.read().splitlines()
+        except FileNotFoundError:
+            with open('PlayerIDs.txt', 'a') as f:
+                setList = []
+                for i in currentLeague.taken_players():
+                    try:
+                        setList.append(i['player_id'])
+                        print(i['player_id'])
+                        # f.write(f'{i["player_id"]}\n')
+                    except RuntimeError:
+                        continue
+                for i in currentLeague.free_agents('Util'):
+                    try:
+                        setList.append(i['player_id'])
+                        print(i['player_id'])
+                        # f.write(f'{i["player_id"]}\n')
+                    except RuntimeError:
+                        continue
+                setList = list(set(setList))
+                setList.sort()
+                print(setList)
+                for item in setList:
+                    f.write(f'{item}\n')
+                sys.exit("Players Loaded successfully please restart the script!")
+                getPlayerIDs(currentLeague)
 
 if __name__ == "__main__":
     importSettings()

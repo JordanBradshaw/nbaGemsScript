@@ -29,42 +29,7 @@ weightedScoreMinimum = thresholds['WeightedScoreMinimum']
 nbaLogDate = f"{date['Month']}/{date['Day']}/{date['Year']}"
 
 def nbaGemsScript():
-    def getIgnoreList():
-        with open('IgnorePlayers.txt', 'r') as f:
-            ignoreIDs = f.read().splitlines()
-        return set(ignoreIDs)
-
-    def getPlayerIDs():
-        try:
-            with open('PlayerIDs.txt') as f:
-                return f.read().splitlines()
-        except FileNotFoundError:
-            with open('PlayerIDs.txt', 'a') as f:
-                setList = []
-                for i in currentLeague.taken_players():
-                    try:
-                        setList.append(i['player_id'])
-                        print(i['player_id'])
-                        # f.write(f'{i["player_id"]}\n')
-                    except RuntimeError:
-                        continue
-                for i in currentLeague.free_agents('Util'):
-                    try:
-                        setList.append(i['player_id'])
-                        print(i['player_id'])
-                        # f.write(f'{i["player_id"]}\n')
-                    except RuntimeError:
-                        continue
-                setList = list(set(setList))
-                setList.sort()
-                print(setList)
-                for item in setList:
-                    f.write(f'{item}\n')
-                print("Restart Script!")
-                getPlayerIDs()
-
-
-
+    ignoreList = iE.getIgnoreList()
     # Setup up connection to yahoo and select NBA
     oauth = connect(oauthDict)
     sport = yfa.Game(oauth, 'nba')
@@ -75,10 +40,10 @@ def nbaGemsScript():
     currentLeague = sport.to_league(possibleLeagues[leagueIndex])
     temp = yahooLeague(currentLeague)
 
-    playerIDs = getPlayerIDs()
+    playerIDs = iE.getPlayerIDs(currentLeague)
     playerIDs = [int(i) for i in playerIDs]
 
-    ignoreList = getIgnoreList()
+    #ignoreList = getIgnoreList()
     gameLog = temp.getStats(playerIDs, logDate)
     gameLog = [x for x in gameLog if x['name'] not in ignoreList]
     gameLog = list(filter(customFilter,gameLog))
@@ -126,7 +91,7 @@ def printScore(playerLog):
         #print(gameLog)
         #reducedLine = reduceLog(playerLog,gameLog)
         #print(reducedLine)
-        print(f"{playerLog['name']}- {gameLog['MIN']} min/ {reduceLog(playerLog,gameLog)}{int(playerLog['TO'])} TO/ {gameLog['FGM']}-{gameLog['FGA']} fgm")
+        print(f"{playerLog['name']}- {gameLog['MIN']} min/ {int(playerLog['PTS'])} pts/ {reduceLog(playerLog,gameLog)}{int(playerLog['TO'])} TO/ {gameLog['FGM']}-{gameLog['FGA']} fgm")
         #print(f"{playerLog['name']}- {gameLog['MIN']} min/ {int(playerLog['PTS'])} pts/ {gameLog['FG3M']} 3pm/ {int(playerLog['REB'])} reb/ {int(playerLog['AST'])} ast/ {int(playerLog['BLK'])} blk/ {int(playerLog['ST'])} stl/ {int(playerLog['TO'])} TO/ {gameLog['FGM']}-{gameLog['FGA']} fgm")
     except BaseException as error:
         print(error)
