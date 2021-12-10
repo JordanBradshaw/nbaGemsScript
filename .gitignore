@@ -130,3 +130,4 @@ dmypy.json
 
 *.json
 nba-apitest.py
+.DS_Store
