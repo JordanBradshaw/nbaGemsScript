@@ -34,29 +34,31 @@ def getPlayerIDs(currentLeague):
                 print("PlayerIDs loaded!")
                 return f.read().splitlines()
         except FileNotFoundError:
+            print("Attempting to create PlayerIDs file...")
             with open('PlayerIDs.txt', 'a') as f:
                 setList = []
                 for i in currentLeague.taken_players():
                     try:
                         setList.append(i['player_id'])
-                        print(i['player_id'])
+                        print(f"{i['player_id']}:  {i['name']}")
                         # f.write(f'{i["player_id"]}\n')
                     except RuntimeError:
                         continue
                 for i in currentLeague.free_agents('Util'):
                     try:
                         setList.append(i['player_id'])
-                        print(i['player_id'])
+                        print(f"{i['player_id']}:  {i['name']}")
                         # f.write(f'{i["player_id"]}\n')
                     except RuntimeError:
                         continue
                 setList = list(set(setList))
                 setList.sort()
-                print(setList)
+                #print(setList)
                 for item in setList:
                     f.write(f'{item}\n')
+                print("PlayerIDs created successfully!")
+                return setList
                 sys.exit("Players Loaded successfully please restart the script!")
-                getPlayerIDs(currentLeague)
 
 if __name__ == "__main__":
     importSettings()

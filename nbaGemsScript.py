@@ -14,6 +14,7 @@ from cli import cli as cli
 from yahooConnect import connect
 from yahooLeague import yahooLeague as yahooLeague
 
+playerExceptions = {'Enes Freedom': 202683, 'Cameron Thomas': 1630560,'PJ Washington': 1629023,'Xavier Tillman': 1630214}
 calcScore = lambda x: (x['PTS'] * 1) + (x['REB'] * 1.2 )+ (x['AST'] * 1.5) + (x['ST'] * 3) + (x['BLK'] * 3) + (x['TO'] * -1)
 customFilter = lambda x: (x['PTS'] * 1) + (x['REB'] * 1.2 )+ (x['AST'] * 1.5) + (x['ST'] * 3) + (x['BLK'] * 3) + (x['TO'] * -1) >= weightedScoreMinimum
 
@@ -55,7 +56,6 @@ def nbaGemsScript():
     print(str(logDate) + " NBA GEMS")
     for item in gameLog:
         printScore(item)
-    #print(gameLog)
     return
 
 
@@ -81,10 +81,16 @@ def printScore(playerLog):
         return retString
 
     name = playerLog['name']
-    #print(str(logDate))
+    apiID = None
     try:
         apiID = [x['id'] for x in player_dict if x['full_name'] == name][0]
-        #print(apiID)
+    except IndexError:
+        if name in playerExceptions:
+            apiID = playerExceptions.get(name)
+        else:
+            print(f'{name} has not been added to the exception list!')
+
+    try:
         gameLogResult = playergamelog.PlayerGameLog(player_id=apiID,date_from_nullable = nbaLogDate, date_to_nullable = nbaLogDate)
         gameLogDict = gameLogResult.get_dict()['resultSets'][0]
         gameLog = dict(zip(gameLogDict['headers'], gameLogDict['rowSet'][0]))
