@@ -54,8 +54,11 @@ def nbaGemsScript():
     #print(ownershipIDs)
     gameLog = [x for x in gameLog if x['player_id'] in ownershipIDs]
     print(str(logDate) + " NBA GEMS")
+    allLogs = []
     for item in gameLog:
-        printScore(item)
+        allLogs.append(printScore(item))
+        #printScore(item)
+    iE.exportReddit(str(logDate),allLogs)
     return
 
 
@@ -65,8 +68,6 @@ def nbaGemsScript():
 def printScore(playerLog):
     def reduceLog(currentYahooLog,currentNBALog):
         retString = ""
-        #print(currentYahooLog)
-        #print(currentNBALog)
         if (currentNBALog['FG3M'] != 0):
             retString += f"{gameLog['FG3M']} 3pm/ "
         if (int(currentYahooLog['REB']) != 0):
@@ -97,15 +98,15 @@ def printScore(playerLog):
         #print(gameLog)
         #reducedLine = reduceLog(playerLog,gameLog)
         #print(reducedLine)
+        time.sleep(1)
         print(f"{playerLog['name']}- {gameLog['MIN']} min/ {int(playerLog['PTS'])} pts/ {reduceLog(playerLog,gameLog)}{int(playerLog['TO'])} TO/ {gameLog['FGM']}-{gameLog['FGA']} fgm")
+        return (f"{playerLog['name']}- {gameLog['MIN']} min/ {int(playerLog['PTS'])} pts/ {reduceLog(playerLog,gameLog)}{int(playerLog['TO'])} TO/ {gameLog['FGM']}-{gameLog['FGA']} fgm")
         #print(f"{playerLog['name']}- {gameLog['MIN']} min/ {int(playerLog['PTS'])} pts/ {gameLog['FG3M']} 3pm/ {int(playerLog['REB'])} reb/ {int(playerLog['AST'])} ast/ {int(playerLog['BLK'])} blk/ {int(playerLog['ST'])} stl/ {int(playerLog['TO'])} TO/ {gameLog['FGM']}-{gameLog['FGA']} fgm")
     except BaseException as error:
         print(error)
         print(f"{playerLog['name']}- ? min/ {int(playerLog['PTS'])} pts/ ? 3pm/ {int(playerLog['REB'])} reb/ {int(playerLog['AST'])} ast/ {int(playerLog['ST'])} stl/ {int(playerLog['TO'])} TO/ ? fgm")
+        return(f"{playerLog['name']}- ? min/ {int(playerLog['PTS'])} pts/ ? 3pm/ {int(playerLog['REB'])} reb/ {int(playerLog['AST'])} ast/ {int(playerLog['ST'])} stl/ {int(playerLog['TO'])} TO/ ? fgm")
 
-    
-    time.sleep(1)
-    
 
 if __name__ == '__main__':
     nbaGemsScript()

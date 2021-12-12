@@ -60,5 +60,15 @@ def getPlayerIDs(currentLeague):
                 return setList
                 sys.exit("Players Loaded successfully please restart the script!")
 
+def exportReddit(currentDate,passedList):
+    with open('exportReddit.txt', 'w') as f:
+        print("exportReddit Loaded!")
+        f.write(f'{currentDate} NBA GEMS\n\n')
+        for item in passedList:
+            f.write(f'{item}\n\n')
+        f.write(f'Get the next newsletter at www.sendfox.com/nbagems\n\n')
+        f.write(f'[nbaGemsScript](https://github.com/JordanBradshaw/nbaGemsScript) written by u/AuToMaTiCx88\n\n')
+
+
 if __name__ == "__main__":
     importSettings()
