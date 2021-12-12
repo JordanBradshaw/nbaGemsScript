@@ -68,16 +68,33 @@ def nbaGemsScript():
 def printScore(playerLog):
     def reduceLog(currentYahooLog,currentNBALog):
         retString = ""
+        if (int(currentYahooLog['PTS']) < 15):
+            retString += f"{int(playerLog['PTS'])} pts/ "
+        else:
+            retString += f"**{int(playerLog['PTS'])} pts/** "
         if (currentNBALog['FG3M'] != 0):
             retString += f"{gameLog['FG3M']} 3pm/ "
         if (int(currentYahooLog['REB']) != 0):
-            retString += f"{int(playerLog['REB'])} reb/ "
+            if (int(currentYahooLog['REB']) < 6):
+                retString += f"{int(playerLog['REB'])} reb/ "
+            else:
+                retString += f"**{int(playerLog['REB'])} reb/** "
         if (int(currentYahooLog['AST']) != 0):
-            retString += f"{int(playerLog['AST'])} ast/ "
-        if (int(currentYahooLog['BLK']) != 0):
-            retString += f"{int(playerLog['BLK'])} blk/ "
+            if (int(currentYahooLog['AST']) < 5):
+                retString += f"{int(playerLog['AST'])} ast/ "
+            else:
+                retString += f"**{int(playerLog['AST'])} ast/** "
         if (int(currentYahooLog['ST']) != 0):
-            retString += f"{int(playerLog['ST'])} stl/ "
+            if (int(currentYahooLog['ST']) < 3):
+                retString += f"{int(playerLog['ST'])} stl/ "
+            else:
+                retString += f"**{int(playerLog['ST'])} stl/** "
+        if (int(currentYahooLog['BLK']) != 0):
+            if (int(currentYahooLog['BLK']) < 3):
+                retString += f"{int(playerLog['BLK'])} blk/ "
+            else:
+                retString += f"**{int(playerLog['BLK'])} blk/** "
+        
         #print(retString)
         return retString
 
@@ -99,7 +116,7 @@ def printScore(playerLog):
         #reducedLine = reduceLog(playerLog,gameLog)
         #print(reducedLine)
         time.sleep(1)
-        print(f"{playerLog['name']}- {gameLog['MIN']} min/ {int(playerLog['PTS'])} pts/ {reduceLog(playerLog,gameLog)}{int(playerLog['TO'])} TO/ {gameLog['FGM']}-{gameLog['FGA']} fgm")
+        print(f"{playerLog['name']}- {gameLog['MIN']} min/ {reduceLog(playerLog,gameLog)}{int(playerLog['TO'])} TO/ {gameLog['FGM']}-{gameLog['FGA']} fgm")
         return (f"{playerLog['name']}- {gameLog['MIN']} min/ {int(playerLog['PTS'])} pts/ {reduceLog(playerLog,gameLog)}{int(playerLog['TO'])} TO/ {gameLog['FGM']}-{gameLog['FGA']} fgm")
         #print(f"{playerLog['name']}- {gameLog['MIN']} min/ {int(playerLog['PTS'])} pts/ {gameLog['FG3M']} 3pm/ {int(playerLog['REB'])} reb/ {int(playerLog['AST'])} ast/ {int(playerLog['BLK'])} blk/ {int(playerLog['ST'])} stl/ {int(playerLog['TO'])} TO/ {gameLog['FGM']}-{gameLog['FGA']} fgm")
     except BaseException as error:

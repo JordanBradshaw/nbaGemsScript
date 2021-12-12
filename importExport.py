@@ -66,8 +66,8 @@ def exportReddit(currentDate,passedList):
         f.write(f'{currentDate} NBA GEMS\n\n')
         for item in passedList:
             f.write(f'{item}\n\n')
-        f.write(f'Get the next newsletter at www.sendfox.com/nbagems\n\n')
-        f.write(f'[nbaGemsScript](https://github.com/JordanBradshaw/nbaGemsScript) written by u/AuToMaTiCx88\n\n')
+        f.write(f'Get the next newsletter at www.sendfox.com/nbagems\n\n\n\n')
+        f.write(f'[nbaGemsScript](https://github.com/JordanBradshaw/nbaGemsScript) written by u/AuToMaTiCx88')
 
 
 if __name__ == "__main__":
