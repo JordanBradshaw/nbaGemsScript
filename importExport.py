@@ -67,11 +67,11 @@ def exportReddit(currentDate,passedList):
         f.write(f'{currentDate} NBA GEMS\n\n')
         for item in passedList:
             if count % 5 == 4:
-                f.write(f'{item}<br />\n\n')
+                f.write(f'{item}&nbsp;\n\n')
             else:
                 f.write(f'{item}\n\n')
             count += 1
-        f.write(f'<br />Get the next newsletter at www.sendfox.com/nbagems<br /><br />\n\n')
+        f.write(f'&nbsp;Get the next newsletter at www.sendfox.com/nbagems&nbsp;&nbsp;\n\n')
         f.write(f'[nbaGemsScript](https://github.com/JordanBradshaw/nbaGemsScript) written by u/AuToMaTiCx88')
 
 
