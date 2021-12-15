@@ -14,7 +14,7 @@ from cli import cli as cli
 from yahooConnect import connect
 from yahooLeague import yahooLeague as yahooLeague
 
-playerExceptions = {'Enes Freedom': 202683, 'Cameron Thomas': 1630560,'PJ Washington': 1629023,'Xavier Tillman': 1630214, 'Bones Hyland': 1630538}
+playerExceptions = {'Enes Freedom': 202683, 'Cameron Thomas': 1630560,'PJ Washington': 1629023,'Xavier Tillman': 1630214, 'Bones Hyland': 1630538, 'Guillermo Hernangómez': 1626195}
 calcScore = lambda x: (x['PTS'] * 1) + (x['REB'] * 1.2 )+ (x['AST'] * 1.5) + (x['ST'] * 3) + (x['BLK'] * 3) + (x['TO'] * -1)
 customFilter = lambda x: (x['PTS'] * 1) + (x['REB'] * 1.2 )+ (x['AST'] * 1.5) + (x['ST'] * 3) + (x['BLK'] * 3) + (x['TO'] * -1) >= weightedScoreMinimum
 

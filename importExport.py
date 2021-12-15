@@ -67,16 +67,22 @@ def exportReddit(currentDate,passedList):
         f.write(f'{currentDate} NBA GEMS\n\n')
         for item in passedList:
             if count % 5 == 4:
-                f.writelines([f'{item}', '\n\n'])
-                f.writelines(['\\', '\n','&nbsp;', '\n'])
+                if(count != len(passedList) - 1):
+                    f.writelines([f'{item}', '\n'])
+                    f.writelines(['\\', '\n','&nbsp;', '\n\n'])
+                else:
+                    f.writelines([f'{item}', '\n'])
             else:
-                f.write(f'{item}\n\n')
+                if(count != len(passedList) - 1):
+                    f.write(f'{item}\n\n')
+                else:
+                    f.write(f'{item}\n')
             count += 1
-        f.writelines(['\n', '\\', '\n','&nbsp;', '\n'])
-        f.write(f'Get the next newsletter at www.sendfox.com/nbagems\n\n')
-        f.writelines(['\n', '\\', '\n','&nbsp;', '\n'])
-        f.writelines(['\n', '\\', '\n','&nbsp;', '\n'])
-        f.write(f'[nbaGemsScript](https://github.com/JordanBradshaw/nbaGemsScript) written by u/AuToMaTiCx88')
+        f.writelines(['\\', '\n','&nbsp;', '\n'])
+        f.write(f'\nGet the next newsletter at www.sendfox.com/nbagems\n')
+        f.writelines(['\\', '\n','&nbsp;', '\n'])
+        f.writelines(['\\', '\n','&nbsp;', '\n'])
+        f.write(f'\n[nbaGemsScript](https://github.com/JordanBradshaw/nbaGemsScript) written by u/AuToMaTiCx88')
 
 
 if __name__ == "__main__":
