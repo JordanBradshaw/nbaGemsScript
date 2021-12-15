@@ -88,14 +88,14 @@ def printScore(playerLog):
             if (int(currentYahooLog['ST']) == 2 and int(currentYahooLog['BLK']) == 2):
                 retString += f"**{int(playerLog['ST'])} stl/** **{int(playerLog['BLK'])} blk/** "
                 return retString
-            if (int(currentYahooLog['ST']) < 3):
-                retString += f"{int(playerLog['ST'])} stl/ "
-            else:
-                retString += f"**{int(playerLog['ST'])} stl/** "
-            if (int(currentYahooLog['BLK']) < 3):
-                retString += f"{int(playerLog['BLK'])} blk/ "
-            else:
-                retString += f"**{int(playerLog['BLK'])} blk/** "
+        if (int(currentYahooLog['ST']) < 3):
+            retString += f"{int(playerLog['ST'])} stl/ "
+        else:
+            retString += f"**{int(playerLog['ST'])} stl/** "
+        if (int(currentYahooLog['BLK']) < 3):
+            retString += f"{int(playerLog['BLK'])} blk/ "
+        else:
+            retString += f"**{int(playerLog['BLK'])} blk/** "
         
         #print(retString)
         return retString
