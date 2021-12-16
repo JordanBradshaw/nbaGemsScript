@@ -133,3 +133,4 @@ nba-apitest.py
 .DS_Store
 PlayerIDs.txt
 exportReddit.txt
+covidScraper.py
