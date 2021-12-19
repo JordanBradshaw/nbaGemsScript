@@ -73,7 +73,11 @@ def printScore(playerLog):
         else:
             retString += f"**{int(playerLog['PTS'])} pts/** "
         if (currentNBALog['FG3M'] != 0):
-            retString += f"{gameLog['FG3M']} 3pm/ "
+            if (currentNBALog['FG3M'] < 3):
+                retString += f"{gameLog['FG3M']} 3pm/ "
+            else:
+                retString += f"**{gameLog['FG3M']} 3pm/** "
+            #retString += f"{gameLog['FG3M']} 3pm/ "
         if (int(currentYahooLog['REB']) != 0):
             if (int(currentYahooLog['REB']) < 6):
                 retString += f"{int(playerLog['REB'])} reb/ "
