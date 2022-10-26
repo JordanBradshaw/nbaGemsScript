@@ -3,7 +3,7 @@ import sys
 
 
 def getIgnoreList():
-        with open('IgnorePlayers.txt', 'r') as f:
+        with open('ignoreList.txt', 'r') as f:
             ignoreIDs = f.read().splitlines()
             print("IgnoreList Loaded!")
         return set(ignoreIDs)
@@ -13,9 +13,11 @@ def importSettings():
         with open('settings.json','r') as json_file:
             data = json.load(json_file)
             print("Settings loaded!")
-        return data['date'][0], data['scoring'][0], data['thresholds'][0], data['oauth'][0]
+        return data['season-year'],data['mode'],data['date'][0], data['scoring'][0], data['thresholds'][0], data['oauth'][0]
     except IOError:
         data = {}
+        data['season-year'] = 2022
+        data['mode'] = 'nba'
         data['date'] = []
         data['scoring'] = []
         data['thresholds'] = []
@@ -30,9 +32,9 @@ def importSettings():
 
 def getPlayerIDs(currentLeague):
         try:
-            with open('PlayerIDs.txt') as f:
+            with open('playerIDs.json') as f:
                 print("PlayerIDs loaded!")
-                return f.read().splitlines()
+                return json.load(f)
         except FileNotFoundError:
             print("Attempting to create PlayerIDs file...")
             with open('PlayerIDs.txt', 'a') as f:

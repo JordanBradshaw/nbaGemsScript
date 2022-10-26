@@ -23,5 +23,5 @@ class yahooLeague:
         return tempList
 
     def getStats(self, passedList, logDate):
-        gameLog = [x for x in self.currentLeague.player_stats(passedList, req_type='date', date=logDate) if x['PTS'] is not '-']
+        gameLog = [x for x in self.currentLeague.player_stats(passedList, req_type='date', date=logDate) if x['PTS'] != '-']
         return gameLog
