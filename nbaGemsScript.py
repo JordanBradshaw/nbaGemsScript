@@ -23,7 +23,10 @@ customFilter = lambda x: (x['PTS'] * 1) + (x['REB'] * 1.2 )+ (x['AST'] * 1.5) + 
 player_dict = players.get_players()
 # Variables
 jsonFilter = lambda x: (x['PTS'] * scoring['Points']) + (x['REB'] * scoring['Rebounds'])+ (x['AST'] * scoring['Assists']) + (x['ST'] * scoring['Steals']) + (x['BLK'] * scoring['Blocks']) + (x['TO'] * scoring['Turnovers']) >= weightedScoreMinimum
-season,mode,date,scoring,thresholds,oauthDict = iE.importSettings()
+season,mode,date,scoring,thresholds = iE.importSettings()
+oauthDict = {}
+with open('oauth.json','r') as oauth_file:
+    oauthDict = json.load(oauth_file)
 #print(date)
 #jsonSettings={}
 #with open('settings.json','w+') as f:

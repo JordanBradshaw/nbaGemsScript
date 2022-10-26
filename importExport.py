@@ -13,7 +13,7 @@ def importSettings():
         with open('settings.json','r') as json_file:
             data = json.load(json_file)
             print("Settings loaded!")
-        return data['season-year'],data['mode'],data['date'][0], data['scoring'][0], data['thresholds'][0], data['oauth'][0]
+        return data['season-year'],data['mode'],data['date'][0], data['scoring'][0], data['thresholds'][0]
     except IOError:
         data = {}
         data['season-year'] = 2022

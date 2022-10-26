@@ -128,7 +128,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-*.json
+oauth*.json
 nba-apitest.py
 .DS_Store
 PlayerIDs.txt
