@@ -165,7 +165,7 @@ def printScore(playerLog):
     apiID = None
     try:
         apiID = [x['id'] for x in player_dict if x['full_name'] == name][0]
-        print(apiID)
+        #print(apiID)
     except IndexError:
         if name in playerExceptions:
             apiID = playerExceptions.get(name)
@@ -174,7 +174,7 @@ def printScore(playerLog):
 
     try:
         gameLogResult = playergamelog.PlayerGameLog(player_id=apiID,date_from_nullable = nbaLogDate, date_to_nullable = nbaLogDate)
-        print(gameLogResult)
+        #print(gameLogResult)
         gameLogDict = gameLogResult.get_dict()['resultSets'][0]
         gameLog = dict(zip(gameLogDict['headers'], gameLogDict['rowSet'][0]))
         #print(gameLog)
@@ -185,7 +185,6 @@ def printScore(playerLog):
         return (f"{playerLog['name']}- {gameLog['MIN']} min/ {reduceLog(playerLog,gameLog)}{int(playerLog['TO'])} TO/ {gameLog['FGM']}-{gameLog['FGA']} fgm")
         #print(f"{playerLog['name']}- {gameLog['MIN']} min/ {int(playerLog['PTS'])} pts/ {gameLog['FG3M']} 3pm/ {int(playerLog['REB'])} reb/ {int(playerLog['AST'])} ast/ {int(playerLog['BLK'])} blk/ {int(playerLog['ST'])} stl/ {int(playerLog['TO'])} TO/ {gameLog['FGM']}-{gameLog['FGA']} fgm")
     except BaseException as error:
-        print(error)
         print(f"{playerLog['name']}- ? min/ {int(playerLog['PTS'])} pts/ ? 3pm/ {int(playerLog['REB'])} reb/ {int(playerLog['AST'])} ast/ {int(playerLog['ST'])} stl/ {int(playerLog['TO'])} TO/ ? fgm")
         return(f"{playerLog['name']}- ? min/ {int(playerLog['PTS'])} pts/ ? 3pm/ {int(playerLog['REB'])} reb/ {int(playerLog['AST'])} ast/ {int(playerLog['ST'])} stl/ {int(playerLog['TO'])} TO/ ? fgm")
 
