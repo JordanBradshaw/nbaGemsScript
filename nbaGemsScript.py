@@ -15,18 +15,25 @@ from cli import cli as cli
 from yahooConnect import connect
 from yahooLeague import yahooLeague as yahooLeague
 
+
+data = iE.importSettings()
+season,mode,date,scoring,thresholds = data['season-year'],data['mode'],data['date'], data['scoring'], data['thresholds']
+
+# print(date)
 #print(playergamelog.PlayerGameLog(player_id=202683,date_from_nullable = "10/19/2022", date_to_nullable = "10/19/2022"))
 playerExceptions = {'Enes Freedom': 202683, 'Cameron Thomas': 1630560,'PJ Washington': 1629023,'Xavier Tillman': 1630214, 'Bones Hyland': 1630538, 'Guillermo Hernangómez': 1626195}
 calcScore = lambda x: (x['PTS'] * 1) + (x['REB'] * 1.2 )+ (x['AST'] * 1.5) + (x['ST'] * 3) + (x['BLK'] * 3) + (x['TO'] * -1)
 customFilter = lambda x: (x['PTS'] * 1) + (x['REB'] * 1.2 )+ (x['AST'] * 1.5) + (x['ST'] * 3) + (x['BLK'] * 3) + (x['TO'] * -1) >= weightedScoreMinimum
 
+
 player_dict = players.get_players()
+
 # Variables
 jsonFilter = lambda x: (x['PTS'] * scoring['Points']) + (x['REB'] * scoring['Rebounds'])+ (x['AST'] * scoring['Assists']) + (x['ST'] * scoring['Steals']) + (x['BLK'] * scoring['Blocks']) + (x['TO'] * scoring['Turnovers']) >= weightedScoreMinimum
-season,mode,date,scoring,thresholds = iE.importSettings()
-oauthDict = {}
-with open('oauth.json','r') as oauth_file:
-    oauthDict = json.load(oauth_file)
+# season,mode,date,scoring,thresholds,oauth = iE.importSettings()
+# oauthDict = {}
+# with open('oauth.json','r') as oauth_file:
+#     oauthDict = json.load(oauth_file)
 #print(date)
 #jsonSettings={}
 #with open('settings.json','w+') as f:
@@ -42,9 +49,10 @@ nbaLogDate = f"{date['Month']}/{date['Day']}/{date['Year']}"
 #print(players.get_players())
 
 def nbaGemsScript():
+    oauth = data['oauth']
     #ignoreList = iE.getIgnoreList()
     # Setup up connection to yahoo and select NBA
-    oauth = connect(oauthDict)
+    oauth = connect(oauth)
     sport = yfa.Game(oauth, 'nba')
     possibleLeagues = sport.league_ids(year=season)
     temp2 = cli(oauth)
@@ -77,7 +85,7 @@ def nbaGemsScript():
     #subIDs = [playerIds.keys()[x:x+25] for x in range(0,len(playerIds.keys()),25)]
     validIDs = []
     for iterations in [playerIDkeys[x:x+25] for x in range(0,len(playerIDkeys),25)]:
-        #print(iterations)
+        # print(iterations)
         try:
             currentOwned = currentLeague.percent_owned(iterations)
             for player in currentOwned:
@@ -87,7 +95,7 @@ def nbaGemsScript():
             validIDs.extend(validIterations)
         except:
             validIDs.extend(iterations)
-    #print(validIDs)
+    # print(validIDs)
     validIDs = list(set(validIDs))
 
 
@@ -97,7 +105,7 @@ def nbaGemsScript():
     gameLog = temp.getStats(validIDs, logDate)
     
     #gameLog = [x for x in gameLog if x['name'] not in ignoreList]
-    #print(gameLog)
+    print(gameLog)
     gameLog = list(filter(jsonFilter,gameLog))
     #print(gameLog)
     #ownershipIDs = [(x['player_id'],x['name']) for x in gameLog]
@@ -111,7 +119,7 @@ def nbaGemsScript():
 
     allLogs = []
     for item in gameLog:
-        allLogs.append(printScore(item))
+        allLogs.append(printScore(item,playerIDs))
         #printScore(item)
     iE.exportReddit(str(logDate),allLogs)
     return
@@ -120,7 +128,7 @@ def nbaGemsScript():
 
 
 
-def printScore(playerLog):
+def printScore(playerLog,players):
     def reduceLog(currentYahooLog,currentNBALog):
         retString = ""
         if (int(currentYahooLog['PTS']) < 15):
@@ -162,18 +170,27 @@ def printScore(playerLog):
         print(f"{playerLog['name']}- ? min/ {int(playerLog['PTS'])} pts/ ? 3pm/ {int(playerLog['REB'])} reb/ {int(playerLog['AST'])} ast/ {int(playerLog['ST'])} stl/ {int(playerLog['TO'])} TO/ ? fgm")
         return(f"{playerLog['name']}- ? min/ {int(playerLog['PTS'])} pts/ ? 3pm/ {int(playerLog['REB'])} reb/ {int(playerLog['AST'])} ast/ {int(playerLog['ST'])} stl/ {int(playerLog['TO'])} TO/ ? fgm")
     name = playerLog['name']
+    
     apiID = None
     try:
-        apiID = [x['id'] for x in player_dict if x['full_name'] == name][0]
-        #print(apiID)
-    except IndexError:
-        if name in playerExceptions:
-            apiID = playerExceptions.get(name)
-        else:
-            print(f'{name} has not been added to the exception list!')
+        # print(playerLog['player_id'])
+        print(players.get(str(playerLog['player_id'])))
+        apiID = players.get(str(playerLog['player_id'])).get("nba_api")
+    except:
+        print("THERE WAS AN ERROR")
+    # try:
+    #     apiID = [x['id'] for x in player_dict if x['full_name'] == name][0]
+    #     #print(apiID)
+    # except IndexError:
+    #     if name in playerExceptions:
+    #         apiID = playerExceptions.get(name)
+    #     else:
+    #         print(f'{name} has not been added to the exception list!')
 
     try:
-        gameLogResult = playergamelog.PlayerGameLog(player_id=apiID,date_from_nullable = nbaLogDate, date_to_nullable = nbaLogDate)
+        # Aiming for 2024-25 string
+        end_season = int(str(season)[::2]) +1
+        gameLogResult = playergamelog.PlayerGameLog(player_id=apiID,season=f"{season}-{end_season}", season_type_all_star = "Regular Season",date_from_nullable = nbaLogDate, date_to_nullable = nbaLogDate)
         #print(gameLogResult)
         gameLogDict = gameLogResult.get_dict()['resultSets'][0]
         gameLog = dict(zip(gameLogDict['headers'], gameLogDict['rowSet'][0]))

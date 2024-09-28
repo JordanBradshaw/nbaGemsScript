@@ -1,27 +1,25 @@
 {
     "season-year": 2022,
     "mode": "nba",
-    "date": [
-        {
-            "Month": 10,
-            "Day": 21,
-            "Year": 2022
-        }
-    ],
-    "scoring": [
-        {
-            "Points": 1,
-            "Rebounds": 1.2,
-            "Assists": 1.5,
-            "Steals": 3,
-            "Blocks": 3,
-            "Turnovers": -1
-        }
-    ],
-    "thresholds": [
-        {
-            "YahooOwnership%Maximum": 70,
-            "WeightedScoreMinimum": 18
-        }
-    ]
+    "date": {
+        "Month": 10,
+        "Day": 21,
+        "Year": 2022
+    },
+    "scoring": {
+        "Points": 1,
+        "Rebounds": 1.2,
+        "Assists": 1.5,
+        "Steals": 3,
+        "Blocks": 3,
+        "Turnovers": -1
+    },
+    "thresholds": {
+        "YahooOwnership%Maximum": 70,
+        "WeightedScoreMinimum": 18
+    },
+    "oauth": {
+        "consumer_key": "",
+        "consumer_secret": ""
+    }
 }
