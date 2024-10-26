@@ -88,8 +88,8 @@ def nbaGemsScript():
         # print(iterations)
         try:
             currentOwned = currentLeague.percent_owned(iterations)
-            for player in currentOwned:
-                print(player)
+            # for player in currentOwned:
+            #     print(player)
             validIterations = [x['player_id'] for x in currentOwned if x.get('percent_owned') is not None and x['percent_owned'] < yahooOwnershipMaximum]
             #print(currentLeague.percent_owned(iterations))
             validIDs.extend(validIterations)
@@ -105,7 +105,7 @@ def nbaGemsScript():
     gameLog = temp.getStats(validIDs, logDate)
     
     #gameLog = [x for x in gameLog if x['name'] not in ignoreList]
-    print(gameLog)
+    # print(gameLog)
     gameLog = list(filter(jsonFilter,gameLog))
     #print(gameLog)
     #ownershipIDs = [(x['player_id'],x['name']) for x in gameLog]

@@ -110,7 +110,7 @@ def getPlayerIDs(currentLeague):
                         yahoo_player = yahoo_player[0]
                     if yahoo_api_players.get(yahoo_player['yahoo_id'], False) != False:
                         yahoo_api_players[yahoo_player['yahoo_id']].setdefault("nba_api", player['id'])
-                print(yahoo_api_players)
+                # print(yahoo_api_players)
                 a.write(json.dumps(yahoo_api_players, indent=4, ensure_ascii=False))
                 # for item in yahoo_api_players:
                 #     f.write(f'{item}\n')
@@ -124,6 +124,7 @@ def exportReddit(currentDate,passedList):
         print("exportReddit Loaded!")
         f.write(f'{currentDate} NBA GEMS\n\n')
         for item in passedList:
+            item = item.replace("** **"," ")
             if count % 5 == 4:
                 if(count != len(passedList) - 1):
                     f.writelines([f'{item}', '\n'])
@@ -141,6 +142,7 @@ def exportReddit(currentDate,passedList):
         f.writelines(['\\', '\n','&nbsp;', '\n'])
         f.writelines(['\\', '\n','&nbsp;', '\n'])
         f.write(f'\nnbaGemsScript written by u/AuToMaTiCx88')
+        
 
 
 if __name__ == "__main__":
